@@ -1,7 +1,7 @@
 # Learn Website Backend [Lumen]
    with Lumen for Backend API. 
    
-   CPANEL : [https://api.bignetlab.com/]
+   Stagging : [https://api.bignetlab.com/]
    
    Frontend Repo : https://github.com/gilangvperdana/Learn-Vue.js
    
