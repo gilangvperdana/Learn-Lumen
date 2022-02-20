@@ -183,28 +183,28 @@ so, the way on Windows just:
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
-
     RewriteEngine On
-
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
-
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
 
+<Files .env>
+order allow,deny
+Deny from all
+</Files>
+
 <IfModule mod_headers.c>
 Header set Access-Control-Allow-Origin "*"
 </IfModule>
-
 # Other option is also enable the headers in your script if you are using PHP, for example:
 <?php
 header("Access-Control-Allow-Headers: Authorization, Content-Type");
@@ -242,6 +242,12 @@ CARA KEDUA :
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+<Files .env>
+order allow,deny
+Deny from all
+</Files>
+
 <IfModule mod_headers.c>
 Header set Access-Control-Allow-Origin "*"
 </IfModule>
