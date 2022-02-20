@@ -14,7 +14,9 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return redirect('https://stg1.gbesar.com');
+    /*return "Hello from Gbesar <br> Lumen (8.2.4) (Laravel Components ^8.0) ";
+    */
 });
 
 $router->get('/posts', 'PostsController@index');
