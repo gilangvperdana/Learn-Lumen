@@ -177,20 +177,8 @@ so, the way on Windows just:
 1. UPLOAD LUMEN DENGAN BENTUK ZIP
 2. BUAT SUBDOMAIN BARU KE SALAH SATU FOLDER DI FILE MANAGER UNTUK MENEMPATKAN PROJECT LUMEN
 3. EKSTRAK ZIP LUMEN PADA FILE MANAGER
-LALU BUAT .htaccess PADA FOLDER HASIL EKSTRAKAN DENGAN ISI:
-<IfModule mod_headers.c>
-Header set Access-Control-Allow-Origin "*"
-</IfModule>
 
-# Other option is also enable the headers in your script if you are using PHP, for example:
-<?php
-header("Access-Control-Allow-Headers: Authorization, Content-Type");
-header("Access-Control-Allow-Origin: *");
-header('content-type: application/json; charset=utf-8');
-?>
-
-4. COPY FILE index.php dan .httaccess PADA FOLDER HASIL EKSTRAKAN LUMEN (Lumen/public/) KE FOLDER SUBDOMAIN
-Edit .httaccess dengan hasil akhir seperti ini:
+4. Edit File index.php dan .httaccess dengan hasil akhir seperti ini:
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
@@ -224,10 +212,58 @@ header("Access-Control-Allow-Origin: *");
 header('content-type: application/json; charset=utf-8');
 ?>
 
-5. GANTI INDEX.PHP AGAR MENGARAHKAN APP.PHP KE ARAH FOLDER PROJECT LUMEN YANG TADI DI-EKSTRAK 
+5. GANTI INDEX.PHP AGAR MENGARAHKAN APP.PHP KE ARAH FOLDER PROJECT LUMEN YANG TADI DI-EKSTRAK, BERIKUT CONTOHNYA :
+
+---
+$app = require __DIR__.'/./bootstrap/app.php';
+---
+
+SILAHKAN COBA AKSES, JIKA MASIH GAGAL GUNAKAN CARA KEDUA.
+
+CARA KEDUA :
+1. Ekstrak Lumen
+2. Move file index.php dan .htacces ke folder utama
+3. Edit .htacces pada folder domain menjadi berisi :
+---
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+    RewriteEngine On
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+<IfModule mod_headers.c>
+Header set Access-Control-Allow-Origin "*"
+</IfModule>
+# Other option is also enable the headers in your script if you are using PHP, for example:
+<?php
+header("Access-Control-Allow-Headers: Authorization, Content-Type");
+header("Access-Control-Allow-Origin: *");
+header('content-type: application/json; charset=utf-8');
+?>
+---
+4. Edit index.php agar mengarahkan app.php ke folder terpisah tadi, contoh :
+---
+$app = require __DIR__.'/./bootstrap/app.php';
+---
+
+Silahkan coba akses, silahkan lanjutkan ke step dibawah ini :
+
 6. BUAT DATABASE PADA CPANEL BESERTA USER DAN PASSWORD
 7. SETELAH DATABASE TERBUAT SILAHKAN GANTI KONFIGURASI DATABASE PADA FILE .env
 8. IMPORT FILE SQL KE PHPMYADMIN CPANEL
 9. AKSES WEB SEPERTI BIASA
+
+Access on https://your_ip_or_domain
 ```
 
